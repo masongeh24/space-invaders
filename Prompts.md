@@ -4,7 +4,11 @@ Prompt 1: I'm building Space Invaders in Java using Swing, split into three file
 
 Prompt 2: Fill in GameModel.java. The model should track: the player's horizontal position, the alien formation (5 rows of 11), the player's bullet (one at a time), alien bullets, the score, and lives remaining (start with 3). Add logic to: move the player left and right, fire a player bullet if one isn't already in flight, advance the player's bullet each tick, move the alien formation right until the edge then down and reverse, fire alien bullets at random intervals, and detect collisions between bullets and aliens or the player. No Swing imports.
 
+Prompt 3: Fill in GameView.java. It should take a reference to the model and draw everything the player sees: the player, the alien formation, both sets of bullets, the score, and remaining lives. Show a centered game-over message when the game ends. The view should only read from the model — it must never change game state.
+
     Observation: I used Gemini 3 flash to fill in the GameModel.java file following the instructions in Prompt 2. I then compiled and ran the program to verify that the game logic was implemented correctly. The program compiles and runs, but isn't much of a game yet. The player rectangle can move left and right, but not fire a bullet. The alien rectangles move in formation, but the bullets tcome at the player too fast. Still, a good output for just the second prompt so far. 
     The AI did follow my instructions to not modify the game state in the GameView.java file.
 
-Prompt 3:
+Prompt 4: Fill in GameController.java. Add keyboard controls so the player can move left and right with the arrow keys and fire with the spacebar. Add a game loop using a Swing timer that updates the model each tick and redraws the view. Stop the loop when the game is over.
+
+    Observation: I used Gemini 3 flash to fill in the GameController.java file following the instructions in Prompt 4. I then compiled and ran the program to verify that the game logic was implemented correctly. When the program runs, the player can move left and right and now fire bullets with the spacebar.
