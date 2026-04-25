@@ -12,3 +12,10 @@ Prompt 3: Fill in GameView.java. It should take a reference to the model and dra
 Prompt 4: Fill in GameController.java. Add keyboard controls so the player can move left and right with the arrow keys and fire with the spacebar. Add a game loop using a Swing timer that updates the model each tick and redraws the view. Stop the loop when the game is over.
 
     Observation: I used Gemini 3 flash to fill in the GameController.java file following the instructions in Prompt 4. I then compiled and ran the program to verify that the game logic was implemented correctly. When the program runs, the player can move left and right and now fire bullets with the spacebar.
+
+Prompt 5: Create a separate file called ModelTester.java with a main method. It should create a GameModel, call its methods directly, and print PASS or FAIL for each check. Write tests for at least five behaviors: the player cannot move past the left or right edge, firing while a bullet is already in flight does nothing, a bullet that reaches the top is removed, destroying an alien increases the score, and losing all lives triggers the game-over state. No testing libraries — just plain Java.
+
+    Observation: The agent did a pretty good job by creating the ModelTester.java file with a main method that creates a GameModel and calls its methods directly, printing PASS or FAIL for each check. I then compiled and ran the program to verify that the game logic was implemented correctly. 
+    There wasn't any swing or awt imports in the model tester and the tests called the real methods and not just stubs.
+
+Prompt 6: 
