@@ -18,4 +18,8 @@ Prompt 5: Create a separate file called ModelTester.java with a main method. It 
     Observation: The agent did a pretty good job by creating the ModelTester.java file with a main method that creates a GameModel and calls its methods directly, printing PASS or FAIL for each check. I then compiled and ran the program to verify that the game logic was implemented correctly. 
     There wasn't any swing or awt imports in the model tester and the tests called the real methods and not just stubs.
 
+
+
+Fleshing out the game now that the basic structure is in place and tested.
+
 Prompt 6: 
