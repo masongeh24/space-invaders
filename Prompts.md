@@ -38,3 +38,11 @@ Bugs observed: The game does not stop when the player loses all lives. (Player c
 
     Observation: I used Gemini 3 flash to fill in the game over logic in GameModel.java, GameController.java, and GameView.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now stops when the player loses all lives and the player input is disabled and the bullets are cleared from the screen when the game is over.
     This was accomplished by adding a lives <= 0 check to the tick() method in GameModel.java, and one to the GameController.java to stop input.
+
+Prompt 7: In GameModel. java, increase the alien movement speed each time an alien is destroyed. Expose a method the Controller can call to get the current recommended timer interval. Do not touch the View.
+
+    Observation: The agent added a getRecommendedTimerInterval() method to GameModel.java to calculate the recommended timer interval based on the number of aliens remaining. It then updates the timer every tick. I don't like how fast the aliens move so I changed the getRecommendedTimerInterval() method to return a higher value to slow them down.
+
+    Iteration: I'm noticing that the bullets are tied to the timer, so when the timer is adjusted to slow down the aliens, the bullets slow down too. I'll try creating a separate timer for the bullets.
+
+    Prompt: Within GameModel.java, decouple the alien movement timer from the game tick so that the alien speed is not tied to the game speed.

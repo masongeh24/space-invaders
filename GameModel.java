@@ -43,7 +43,7 @@ public class GameModel {
     
     private int alienDirection = 1; // 1 for right, -1 for left
     private int alienMoveCounter = 0;
-    private final int ALIEN_MOVE_THRESHOLD = 20; // Move aliens every N ticks
+    private int alienMoveThreshold = 60; // Move aliens every N ticks
     
     private Random random = new Random();
 
@@ -58,6 +58,7 @@ public class GameModel {
         alienBullets = new ArrayList<>();
         score = 0;
         lives = 3;
+        alienMoveThreshold = 60;
         initAliens();
         initShields();
     }
@@ -104,7 +105,7 @@ public class GameModel {
 
     private void updateAliens() {
         alienMoveCounter++;
-        if (alienMoveCounter >= ALIEN_MOVE_THRESHOLD) {
+        if (alienMoveCounter >= alienMoveThreshold) {
             alienMoveCounter = 0;
             boolean shiftDown = false;
 
@@ -166,6 +167,11 @@ public class GameModel {
                 aliens.remove(hit);
                 playerBullet = null;
                 score += 10;
+                
+                // Speed up aliens: threshold decreases as aliens are destroyed
+                int totalAliens = ALIEN_ROWS * ALIEN_COLS;
+                int remainingAliens = aliens.size();
+                alienMoveThreshold = 2 + (int)(58 * ((double)remainingAliens / totalAliens));
             }
         }
 
