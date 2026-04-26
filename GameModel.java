@@ -40,6 +40,8 @@ public class GameModel {
     private List<Bullet> alienBullets;
     private int score;
     private int lives;
+    private boolean paused = false;
+    private GameView view;
 
     private int alienDirection = 1; // 1 for right, -1 for left
     private int alienMoveCounter = 0;
@@ -49,6 +51,32 @@ public class GameModel {
 
     public GameModel() {
         reset();
+    }
+
+    public void setView(GameView view) {
+        this.view = view;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void handleLifeLost() {
+        paused = true;
+        new Thread(() -> {
+            try {
+                for (int i = 0; i < 3; i++) {
+                    if (view != null) {
+                        view.flashPlayer();
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                // Ignore
+            } finally {
+                paused = false;
+            }
+        }).start();
     }
 
     public void reset() {
@@ -88,7 +116,7 @@ public class GameModel {
 
     // Logic for updating game state
     public void tick() {
-        if (lives <= 0)
+        if (lives <= 0 || paused)
             return;
 
         updatePlayerBullet();
@@ -195,8 +223,8 @@ public class GameModel {
                     playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
                 toRemove.add(b);
                 lives--;
-                if (lives <= 0) {
-                    // Game Over logic could go here
+                if (lives > 0) {
+                    handleLifeLost();
                 }
             }
         }
@@ -221,6 +249,7 @@ public class GameModel {
 
     // Actions
     public void movePlayer(int delta) {
+        if (paused) return;
         playerX += delta;
         if (playerX < 0)
             playerX = 0;
@@ -229,6 +258,7 @@ public class GameModel {
     }
 
     public void firePlayerBullet() {
+        if (paused) return;
         if (playerBullet == null) {
             playerBullet = new Bullet(playerX + PLAYER_WIDTH / 2, playerY);
         }

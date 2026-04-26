@@ -12,11 +12,23 @@ import java.awt.Font;
  */
 public class GameView extends JPanel {
     private GameModel model;
+    private Color playerColor = Color.GREEN;
 
     public GameView(GameModel model) {
         this.model = model;
         this.setPreferredSize(new Dimension(GameModel.WIDTH, GameModel.HEIGHT));
         this.setBackground(Color.BLACK);
+    }
+
+    public void flashPlayer() {
+        playerColor = Color.WHITE;
+        repaint();
+        javax.swing.Timer timer = new javax.swing.Timer(500, e -> {
+            playerColor = Color.GREEN;
+            repaint();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     @Override
@@ -31,7 +43,7 @@ public class GameView extends JPanel {
     }
 
     private void drawPlayer(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(playerColor);
         g.fillRect(model.getPlayerX(), model.getPlayerY(), GameModel.PLAYER_WIDTH, GameModel.PLAYER_HEIGHT);
     }
 

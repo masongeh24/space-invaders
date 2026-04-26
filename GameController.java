@@ -21,6 +21,7 @@ public class GameController {
     public GameController() {
         model = new GameModel();
         view = new GameView(model);
+        model.setView(view);
         
         setupWindow();
         setupInput();

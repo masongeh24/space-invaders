@@ -59,4 +59,10 @@ Prompt 8: In GameModel.java, add a reset() method that will reset the game to it
 In GameController.java, add code so that pressing the R key will call the reset() method in GameModel.java. 
 
     Observation: I used Gemini 3 flash to implement the reset() method in GameModel.java and the R key functionality in GameController.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now resets to its initial state when the R key is pressed.
+
+Prompt 9: In GameModel.java (Do not use swing imports in GameModel.java), add a method that will pause the game for three seconds when a life is lost, also forwarding call(s) to GameView.java to make the player box flash white three times at one second intervals while the game is paused.
+
+    Observation: I used Gemini 3 flash to implement the pause and flash functionality in GameModel.java and GameView.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now pauses for three seconds when a life is lost and the player box flashes white three times at one second intervals while the game is paused.
+
+Prompt 10:
     
