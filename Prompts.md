@@ -22,4 +22,10 @@ Prompt 5: Create a separate file called ModelTester.java with a main method. It 
 
 Fleshing out the game now that the basic structure is in place and tested.
 
-Prompt 6: 
+Prompt 6: In GameModel.java, add 4 evenly spaced shield rectangles positioned between the player and the alien formation. When hit by a bullet, the shield is partially dissolved from the hit. No Swing imports.
+
+    Observation: I used Gemini 3 flash to fill in the GameModel.java file following the instructions in Prompt 6. I then compiled and ran the program to verify that the game logic was implemented correctly. The agent created a new class called Shield.java and updated the GameView.java file to draw the shields. I then ran the program again to make sure it compiled and ran correctly. The shields are now in place and work as expected. I think it would be better if the shields were a bit weaker. It takes too many bullets to break them down.
+
+    Iteration: Adjust the alien and player bullets to do more vertical damage to the shields. They should be able to be pierced through if hit twice in the same vertical slice.
+
+    Observation: The shields now take 2 hits to break down vertically.
