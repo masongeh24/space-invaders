@@ -59,6 +59,8 @@ public class GameView extends JPanel {
     }
 
     private void drawBullets(Graphics g) {
+        if (model.isGameOver()) return;
+
         // Player bullet
         GameModel.Bullet pb = model.getPlayerBullet();
         if (pb != null) {

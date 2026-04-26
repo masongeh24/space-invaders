@@ -40,6 +40,8 @@ public class GameController {
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (model.isGameOver()) return;
+
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         model.movePlayer(-10);
@@ -58,7 +60,11 @@ public class GameController {
     private void startGameLoop() {
         // Run game logic and repaint every 16ms (~60 FPS)
         gameLoop = new Timer(16, e -> {
-            model.tick();
+            if (model.isGameOver()) {
+                gameLoop.stop();
+            } else {
+                model.tick();
+            }
             view.repaint();
         });
         gameLoop.start();

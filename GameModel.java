@@ -85,6 +85,8 @@ public class GameModel {
 
     // Logic for updating game state
     public void tick() {
+        if (lives <= 0) return;
+        
         updatePlayerBullet();
         updateAliens();
         updateAlienBullets();
@@ -230,6 +232,7 @@ public class GameModel {
     public List<Bullet> getAlienBullets() { return alienBullets; }
     public int getScore() { return score; }
     public int getLives() { return lives; }
+    public boolean isGameOver() { return lives <= 0; }
 
     // Inner classes for entities
     public static class Alien {

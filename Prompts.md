@@ -29,3 +29,12 @@ Prompt 6: In GameModel.java, add 4 evenly spaced shield rectangles positioned be
     Iteration: Adjust the alien and player bullets to do more vertical damage to the shields. They should be able to be pierced through if hit twice in the same vertical slice.
 
     Observation: The shields now take 2 hits to break down vertically.
+
+Bugs observed: The game does not stop when the player loses all lives. (Player can still move and shoot after losing all lives, lives remaining can go negative) I believe this is a bug in the GameModel.java file that can be fixed by adding an if statement to the tick method that checks if the lives are less than or equal to 0 and if so, stops the game.
+
+    Prompt to fix bugs: Can you fill in the game over logic in GameModel.java so that when lives <= 0, the game timer is stopped. (No swing imports) 
+    Then in GameController.java, Player input should be disabled when lives are <= 0.
+    In GameView.java, when lives are <= 0 just the bullets should be cleared from the screen.
+
+    Observation: I used Gemini 3 flash to fill in the game over logic in GameModel.java, GameController.java, and GameView.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now stops when the player loses all lives and the player input is disabled and the bullets are cleared from the screen when the game is over.
+    This was accomplished by adding a lives <= 0 check to the tick() method in GameModel.java, and one to the GameController.java to stop input.
