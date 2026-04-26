@@ -48,16 +48,18 @@ public class GameModel {
     private Random random = new Random();
 
     public GameModel() {
-        resetGame();
+        reset();
     }
 
-    public void resetGame() {
+    public void reset() {
         playerX = WIDTH / 2 - PLAYER_WIDTH / 2;
         playerY = HEIGHT - 50;
         playerBullet = null;
         alienBullets = new ArrayList<>();
         score = 0;
         lives = 3;
+        alienDirection = 1;
+        alienMoveCounter = 0;
         alienMoveThreshold = 60;
         initAliens();
         initShields();

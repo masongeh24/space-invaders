@@ -42,6 +42,17 @@ public class GameController {
         view.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    model.reset();
+                    leftPressed = false;
+                    rightPressed = false;
+                    if (!gameLoop.isRunning()) {
+                        gameLoop.start();
+                    }
+                    view.repaint();
+                    return;
+                }
+
                 if (model.isGameOver()) return;
 
                 switch (e.getKeyCode()) {

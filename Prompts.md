@@ -55,5 +55,8 @@ Tweak: I'm noticing that the movement doesn't feel very responsive so I'll try t
 
     Observation: I used Gemini 3 flash to implement responsive player movement in GameController.java. When the user holds down the left or right arrow key, the player now moves smoothly in that direction without the previous delay due to tracking key presses in a boolean flag and updating with the timer. However, now the player moves faster than before so I will adjust the movement speed from +&-10 to +&-5.
 
-Prompt 8: 
+Prompt 8: In GameModel.java, add a reset() method that will reset the game to its initial state. This should include resetting the player's position, the alien formation, the bullets, the score, and the lives remaining. No swing imports. 
+In GameController.java, add code so that pressing the R key will call the reset() method in GameModel.java. 
+
+    Observation: I used Gemini 3 flash to implement the reset() method in GameModel.java and the R key functionality in GameController.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now resets to its initial state when the R key is pressed.
     
