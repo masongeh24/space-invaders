@@ -21,6 +21,7 @@ Prompt 5: Create a separate file called ModelTester.java with a main method. It 
 
 
 Fleshing out the game now that the basic structure is in place and tested.
+Basic extensions:
 
 Prompt 6: In GameModel.java, add 4 evenly spaced shield rectangles positioned between the player and the alien formation. When hit by a bullet, the shield is partially dissolved from the hit. No Swing imports.
 
@@ -75,4 +76,10 @@ In GameView.java, the bonus ship should be drawn as a red rectangle, the same si
     I then compiled and ran the program to verify that the game logic was implemented correctly. The game now has a bonus ship that appears randomly and gives 300 points when shot by the player.
 
 
-    
+Additional Enhancements: Change points distribution, add sound effects, add sprites, and multiple waves instead of a win screen.
+
+Prompt 12: In GameModel.java, implement code that makes the bottom two rows of aliens worth 10 points each, the middle two rows worth 20 points each, and the top row worth 30 points each. Do not use swing imports in GameModel.java.
+
+    Observation: I used Gemini 3 flash to implement the alien point system in GameModel.java. It was suprisingly simple to just add if statements to the initAliens() method to assign points based on the row and update the score by the alien's points when hit instead of a fixed 10 points. I then compiled and ran the program to verify that the game logic was implemented correctly. The bottom two rows of aliens are now worth 10 points each, the middle two rows are worth 20 points each, and the top row is worth 30 points each.
+
+Prompt 13: 

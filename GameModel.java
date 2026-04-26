@@ -147,10 +147,19 @@ public class GameModel {
     private void initAliens() {
         aliens = new ArrayList<>();
         for (int row = 0; row < ALIEN_ROWS; row++) {
+            int points;
+            if (row == 0) {
+                points = 30; // Top row
+            } else if (row <= 2) {
+                points = 20; // Middle two rows
+            } else {
+                points = 10; // Bottom two rows
+            }
+
             for (int col = 0; col < ALIEN_COLS; col++) {
                 int x = 50 + col * ALIEN_SPACING_X;
                 int y = 50 + row * ALIEN_SPACING_Y;
-                aliens.add(new Alien(x, y));
+                aliens.add(new Alien(x, y, points));
             }
         }
     }
@@ -270,7 +279,7 @@ public class GameModel {
             if (hit != null) {
                 aliens.remove(hit);
                 playerBullet = null;
-                score += 10;
+                score += hit.points;
                 if (aliens.isEmpty()) {
                     if (score > highScore) {
                         highScore = score;
@@ -410,11 +419,12 @@ public class GameModel {
 
     // Inner classes for entities
     public static class Alien {
-        public int x, y;
+        public int x, y, points;
 
-        public Alien(int x, int y) {
+        public Alien(int x, int y, int points) {
             this.x = x;
             this.y = y;
+            this.points = points;
         }
     }
 
