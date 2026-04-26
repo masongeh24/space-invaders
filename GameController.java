@@ -15,6 +15,8 @@ public class GameController {
     private GameModel model;
     private GameView view;
     private Timer gameLoop;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
 
     public GameController() {
         model = new GameModel();
@@ -44,13 +46,25 @@ public class GameController {
 
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        model.movePlayer(-10);
+                        leftPressed = true;
                         break;
                     case KeyEvent.VK_RIGHT:
-                        model.movePlayer(10);
+                        rightPressed = true;
                         break;
                     case KeyEvent.VK_SPACE:
                         model.firePlayerBullet();
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        leftPressed = false;
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        rightPressed = false;
                         break;
                 }
             }
@@ -63,6 +77,8 @@ public class GameController {
             if (model.isGameOver()) {
                 gameLoop.stop();
             } else {
+                if (leftPressed) model.movePlayer(-5);
+                if (rightPressed) model.movePlayer(5);
                 model.tick();
             }
             view.repaint();

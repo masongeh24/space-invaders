@@ -20,7 +20,7 @@ public class GameModel {
     public static final int ALIEN_HEIGHT = 20;
     public static final int BULLET_WIDTH = 5;
     public static final int BULLET_HEIGHT = 10;
-    
+
     public static final int ALIEN_ROWS = 5;
     public static final int ALIEN_COLS = 11;
     public static final int ALIEN_SPACING_X = 50;
@@ -40,11 +40,11 @@ public class GameModel {
     private List<Bullet> alienBullets;
     private int score;
     private int lives;
-    
+
     private int alienDirection = 1; // 1 for right, -1 for left
     private int alienMoveCounter = 0;
     private int alienMoveThreshold = 60; // Move aliens every N ticks
-    
+
     private Random random = new Random();
 
     public GameModel() {
@@ -86,8 +86,9 @@ public class GameModel {
 
     // Logic for updating game state
     public void tick() {
-        if (lives <= 0) return;
-        
+        if (lives <= 0)
+            return;
+
         updatePlayerBullet();
         updateAliens();
         updateAlienBullets();
@@ -158,7 +159,7 @@ public class GameModel {
             Alien hit = null;
             for (Alien alien : aliens) {
                 if (intersects(playerBullet.x, playerBullet.y, BULLET_WIDTH, BULLET_HEIGHT,
-                                alien.x, alien.y, ALIEN_WIDTH, ALIEN_HEIGHT)) {
+                        alien.x, alien.y, ALIEN_WIDTH, ALIEN_HEIGHT)) {
                     hit = alien;
                     break;
                 }
@@ -167,11 +168,11 @@ public class GameModel {
                 aliens.remove(hit);
                 playerBullet = null;
                 score += 10;
-                
+
                 // Speed up aliens: threshold decreases as aliens are destroyed
                 int totalAliens = ALIEN_ROWS * ALIEN_COLS;
                 int remainingAliens = aliens.size();
-                alienMoveThreshold = 2 + (int)(58 * ((double)remainingAliens / totalAliens));
+                alienMoveThreshold = 2 + (int) (48 * ((double) remainingAliens / totalAliens));
             }
         }
 
@@ -189,7 +190,7 @@ public class GameModel {
         List<Bullet> toRemove = new ArrayList<>();
         for (Bullet b : alienBullets) {
             if (intersects(b.x, b.y, BULLET_WIDTH, BULLET_HEIGHT,
-                           playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
+                    playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
                 toRemove.add(b);
                 lives--;
                 if (lives <= 0) {
@@ -219,8 +220,10 @@ public class GameModel {
     // Actions
     public void movePlayer(int delta) {
         playerX += delta;
-        if (playerX < 0) playerX = 0;
-        if (playerX > WIDTH - PLAYER_WIDTH) playerX = WIDTH - PLAYER_WIDTH;
+        if (playerX < 0)
+            playerX = 0;
+        if (playerX > WIDTH - PLAYER_WIDTH)
+            playerX = WIDTH - PLAYER_WIDTH;
     }
 
     public void firePlayerBullet() {
@@ -230,25 +233,59 @@ public class GameModel {
     }
 
     // Getters
-    public int getPlayerX() { return playerX; }
-    public int getPlayerY() { return playerY; }
-    public List<Alien> getAliens() { return aliens; }
-    public List<Shield> getShields() { return shields; }
-    public Bullet getPlayerBullet() { return playerBullet; }
-    public List<Bullet> getAlienBullets() { return alienBullets; }
-    public int getScore() { return score; }
-    public int getLives() { return lives; }
-    public boolean isGameOver() { return lives <= 0; }
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    public int getPlayerY() {
+        return playerY;
+    }
+
+    public List<Alien> getAliens() {
+        return aliens;
+    }
+
+    public List<Shield> getShields() {
+        return shields;
+    }
+
+    public Bullet getPlayerBullet() {
+        return playerBullet;
+    }
+
+    public List<Bullet> getAlienBullets() {
+        return alienBullets;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public boolean isGameOver() {
+        return lives <= 0;
+    }
 
     // Inner classes for entities
     public static class Alien {
         public int x, y;
-        public Alien(int x, int y) { this.x = x; this.y = y; }
+
+        public Alien(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public static class Bullet {
         public int x, y;
-        public Bullet(int x, int y) { this.x = x; this.y = y; }
+
+        public Bullet(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public static class Shield {
@@ -280,7 +317,7 @@ public class GameModel {
                             int sx = x + c * SHIELD_SEGMENT_SIZE;
                             int sy = y + r * SHIELD_SEGMENT_SIZE;
                             if (bx < sx + SHIELD_SEGMENT_SIZE && bx + BULLET_WIDTH > sx &&
-                                by < sy + SHIELD_SEGMENT_SIZE && by + BULLET_HEIGHT > sy) {
+                                    by < sy + SHIELD_SEGMENT_SIZE && by + BULLET_HEIGHT > sy) {
                                 clearVertical(r, c, bx, true);
                                 return true;
                             }
@@ -295,7 +332,7 @@ public class GameModel {
                             int sx = x + c * SHIELD_SEGMENT_SIZE;
                             int sy = y + r * SHIELD_SEGMENT_SIZE;
                             if (bx < sx + SHIELD_SEGMENT_SIZE && bx + BULLET_WIDTH > sx &&
-                                by < sy + SHIELD_SEGMENT_SIZE && by + BULLET_HEIGHT > sy) {
+                                    by < sy + SHIELD_SEGMENT_SIZE && by + BULLET_HEIGHT > sy) {
                                 clearVertical(r, c, bx, false);
                                 return true;
                             }
@@ -310,11 +347,12 @@ public class GameModel {
             int rows = segments.length;
             int cols = segments[0].length;
             int sx = x + hitCol * SHIELD_SEGMENT_SIZE;
-            
+
             // Determine affected columns
             int startCol = hitCol;
             int endCol = (bx + BULLET_WIDTH > sx + SHIELD_SEGMENT_SIZE) ? hitCol + 1 : hitCol;
-            if (endCol >= cols) endCol = cols - 1;
+            if (endCol >= cols)
+                endCol = cols - 1;
 
             // Clear a vertical chunk of 6 segments (50% of shield height)
             for (int c = startCol; c <= endCol; c++) {

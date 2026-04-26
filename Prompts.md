@@ -46,3 +46,14 @@ Prompt 7: In GameModel. java, increase the alien movement speed each time an ali
     Iteration: I'm noticing that the bullets are tied to the timer, so when the timer is adjusted to slow down the aliens, the bullets slow down too. I'll try creating a separate timer for the bullets.
 
     Prompt: Within GameModel.java, decouple the alien movement timer from the game tick so that the alien speed is not tied to the game speed.
+
+    Observation: Removed the getRecommendedTimerInterval() method from GameModel.java and added a statement to the hit code so that it updates the alien movement timer when an alien is destroyed.
+
+Tweak: I'm noticing that the movement doesn't feel very responsive so I'll try to adjust that in Game Controller.
+
+    Prompt: Can you tweak the player movement code in  GameController.java to include detection for  when a direction key is held down. It feels like when holding down the direction key the player moves once and there is a slight delay before continuously moving.
+
+    Observation: I used Gemini 3 flash to implement responsive player movement in GameController.java. When the user holds down the left or right arrow key, the player now moves smoothly in that direction without the previous delay due to tracking key presses in a boolean flag and updating with the timer. However, now the player moves faster than before so I will adjust the movement speed from +&-10 to +&-5.
+
+Prompt 8: 
+    
