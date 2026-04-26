@@ -40,6 +40,7 @@ public class GameView extends JPanel {
         drawShields(g);
         drawBullets(g);
         drawUI(g);
+        drawHighScore(g);
     }
 
     private void drawPlayer(Graphics g) {
@@ -102,5 +103,13 @@ public class GameView extends JPanel {
             g.setFont(new Font("Arial", Font.BOLD, 48));
             g.drawString("YOU WIN!", GameModel.WIDTH / 2 - 120, GameModel.HEIGHT / 2);
         }
+    }
+
+    private void drawHighScore(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 16));
+        String text = "High Score: " + model.getHighScore();
+        int width = g.getFontMetrics().stringWidth(text);
+        g.drawString(text, GameModel.WIDTH - width - 10, 20);
     }
 }

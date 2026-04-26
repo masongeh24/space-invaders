@@ -64,5 +64,8 @@ Prompt 9: In GameModel.java (Do not use swing imports in GameModel.java), add a 
 
     Observation: I used Gemini 3 flash to implement the pause and flash functionality in GameModel.java and GameView.java. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now pauses for three seconds when a life is lost and the player box flashes white three times at one second intervals while the game is paused.
 
-Prompt 10:
+Prompt 10: Add a text file called Score.txt in the same directory as the game that will store the high score. When the game starts, the high score should be loaded from the text file in GameModel.java. When the game ends, the high score should be updated if the current score is higher than the high score in GameModel.java. Add a method in GameView.java to display the high score in the top right corner of the screen.
+
+    Observation: 
+    
     

@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * GameModel.java
@@ -40,8 +45,10 @@ public class GameModel {
     private List<Bullet> alienBullets;
     private int score;
     private int lives;
+    private int highScore;
     private boolean paused = false;
     private GameView view;
+    private static final String SCORE_FILE = "Score.txt";
 
     private int alienDirection = 1; // 1 for right, -1 for left
     private int alienMoveCounter = 0;
@@ -50,7 +57,27 @@ public class GameModel {
     private Random random = new Random();
 
     public GameModel() {
+        loadHighScore();
         reset();
+    }
+
+    private void loadHighScore() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SCORE_FILE))) {
+            String line = reader.readLine();
+            if (line != null) {
+                highScore = Integer.parseInt(line.trim());
+            }
+        } catch (IOException | NumberFormatException e) {
+            highScore = 0;
+        }
+    }
+
+    private void saveHighScore() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SCORE_FILE))) {
+            writer.write(String.valueOf(highScore));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setView(GameView view) {
@@ -198,6 +225,12 @@ public class GameModel {
                 aliens.remove(hit);
                 playerBullet = null;
                 score += 10;
+                if (aliens.isEmpty()) {
+                    if (score > highScore) {
+                        highScore = score;
+                        saveHighScore();
+                    }
+                }
 
                 // Speed up aliens: threshold decreases as aliens are destroyed
                 int totalAliens = ALIEN_ROWS * ALIEN_COLS;
@@ -225,6 +258,11 @@ public class GameModel {
                 lives--;
                 if (lives > 0) {
                     handleLifeLost();
+                } else {
+                    if (score > highScore) {
+                        highScore = score;
+                        saveHighScore();
+                    }
                 }
             }
         }
@@ -295,6 +333,10 @@ public class GameModel {
 
     public int getLives() {
         return lives;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
     public boolean isGameOver() {
