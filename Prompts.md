@@ -66,10 +66,13 @@ Prompt 9: In GameModel.java (Do not use swing imports in GameModel.java), add a 
 
 Prompt 10: Add a text file called Score.txt in the same directory as the game that will store the high score. When the game starts, the high score should be loaded from the text file in GameModel.java. When the game ends, the high score should be updated if the current score is higher than the high score in GameModel.java. Add a method in GameView.java to display the high score in the top right corner of the screen.
 
-<<<<<<< HEAD
     Observation: The agent correctly implemented the high score functionality in GameModel.java and GameView.java. The high score is now stored in a text file, parsed on program start up and when the game ends, and displayed in the top right corner of the screen. I then compiled and ran the program to verify that the game logic was implemented correctly. The game now displays the high score and updates it when the score is higher than the high score.
-=======
-    Observation: 
->>>>>>> de7ec0305576756039edd9c01f4871b5abac3740
-    
+
+Prompt 11: In GameModel.java, implement code for a bonus ship that will fly across the top of the screen and will give 300 points when shot by the player. The bonus ship should appear randomly coming from either the left or right side of the screen every 10-30 seconds. Do not use swing imports in GameModel.java.
+In GameView.java, the bonus ship should be drawn as a red rectangle, the same size as the player.
+
+    Observation: The agent correctly implemented the bonus ship functionality in GameModel.java and GameView.java. The bonus ship now appears randomly coming from either the left or right side of the screen every 10-30 seconds and gives 300 points if shot by the player. This works by using a timer that counts down from 10-30 seconds (randomized) and when it reaches 0, it spawns the bonus ship. Then, if it is shot by the player, it is removed from the game and the timer is reset. If it reaches either edge of the screen without being hit, it also deactivates itself and resets the timer. The hit code is added onto the check collisions method in GameModel.java. 
+    I then compiled and ran the program to verify that the game logic was implemented correctly. The game now has a bonus ship that appears randomly and gives 300 points when shot by the player.
+
+
     

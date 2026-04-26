@@ -37,6 +37,7 @@ public class GameView extends JPanel {
         
         drawPlayer(g);
         drawAliens(g);
+        drawBonusShip(g);
         drawShields(g);
         drawBullets(g);
         drawUI(g);
@@ -52,6 +53,13 @@ public class GameView extends JPanel {
         g.setColor(Color.WHITE);
         for (GameModel.Alien alien : model.getAliens()) {
             g.fillRect(alien.x, alien.y, GameModel.ALIEN_WIDTH, GameModel.ALIEN_HEIGHT);
+        }
+    }
+
+    private void drawBonusShip(Graphics g) {
+        if (model.isBonusShipActive()) {
+            g.setColor(Color.RED);
+            g.fillRect(model.getBonusShipX(), model.getBonusShipY(), GameModel.PLAYER_WIDTH, GameModel.PLAYER_HEIGHT);
         }
     }
 

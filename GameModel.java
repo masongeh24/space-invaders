@@ -55,6 +55,13 @@ public class GameModel {
     private int alienMoveThreshold = 60; // Move aliens every N ticks
 
     private Random random = new Random();
+    
+    // Bonus Ship State
+    private boolean bonusShipActive = false;
+    private int bonusShipX;
+    private int bonusShipY = 30; // Near the top
+    private int bonusShipDirection; // 1 for left-to-right, -1 for right-to-left
+    private int bonusShipTimer; // Ticks until next spawn
 
     public GameModel() {
         loadHighScore();
@@ -118,6 +125,13 @@ public class GameModel {
         alienMoveThreshold = 60;
         initAliens();
         initShields();
+        resetBonusShipTimer();
+        bonusShipActive = false;
+    }
+
+    private void resetBonusShipTimer() {
+        // 10-30 seconds at ~60 FPS
+        bonusShipTimer = 600 + random.nextInt(1201);
     }
 
     private void initShields() {
@@ -149,7 +163,39 @@ public class GameModel {
         updatePlayerBullet();
         updateAliens();
         updateAlienBullets();
+        updateBonusShip();
         checkCollisions();
+    }
+
+    private void updateBonusShip() {
+        if (!bonusShipActive) {
+            bonusShipTimer--;
+            if (bonusShipTimer <= 0) {
+                spawnBonusShip();
+            }
+        } else {
+            bonusShipX += bonusShipDirection * 3; // Slightly faster than aliens
+            if (bonusShipDirection == 1 && bonusShipX > WIDTH) {
+                bonusShipActive = false;
+                resetBonusShipTimer();
+            } else if (bonusShipDirection == -1 && bonusShipX < -PLAYER_WIDTH) {
+                bonusShipActive = false;
+                resetBonusShipTimer();
+            }
+        }
+    }
+
+    private void spawnBonusShip() {
+        bonusShipActive = true;
+        if (random.nextBoolean()) {
+            // Start from left
+            bonusShipX = -PLAYER_WIDTH;
+            bonusShipDirection = 1;
+        } else {
+            // Start from right
+            bonusShipX = WIDTH;
+            bonusShipDirection = -1;
+        }
     }
 
     private void updatePlayerBullet() {
@@ -236,6 +282,13 @@ public class GameModel {
                 int totalAliens = ALIEN_ROWS * ALIEN_COLS;
                 int remainingAliens = aliens.size();
                 alienMoveThreshold = 2 + (int) (48 * ((double) remainingAliens / totalAliens));
+            } else if (bonusShipActive && intersects(playerBullet.x, playerBullet.y, BULLET_WIDTH, BULLET_HEIGHT,
+                    bonusShipX, bonusShipY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
+                // Player bullet vs Bonus Ship
+                bonusShipActive = false;
+                playerBullet = null;
+                score += 300;
+                resetBonusShipTimer();
             }
         }
 
@@ -337,6 +390,18 @@ public class GameModel {
 
     public int getHighScore() {
         return highScore;
+    }
+
+    public boolean isBonusShipActive() {
+        return bonusShipActive;
+    }
+
+    public int getBonusShipX() {
+        return bonusShipX;
+    }
+
+    public int getBonusShipY() {
+        return bonusShipY;
     }
 
     public boolean isGameOver() {
