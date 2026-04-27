@@ -65,6 +65,8 @@ public class GameModel {
     private int bonusShipTimer; // Ticks until next spawn
     
     private boolean animframe = false;
+    private boolean bulletAnimFrame = false;
+    private int bulletAnimCounter = 0;
 
     public GameModel() {
         loadHighScore();
@@ -172,6 +174,12 @@ public class GameModel {
     public void tick() {
         if (lives <= 0 || paused || onTitleScreen)
             return;
+
+        bulletAnimCounter++;
+        if (bulletAnimCounter >= 8) {
+            bulletAnimCounter = 0;
+            bulletAnimFrame = !bulletAnimFrame;
+        }
 
         updatePlayerBullet();
         updateAliens();
@@ -422,6 +430,10 @@ public class GameModel {
 
     public boolean isAnimFrame() {
         return animframe;
+    }
+
+    public boolean isBulletAnimFrame() {
+        return bulletAnimFrame;
     }
 
     public boolean isGameOver() {

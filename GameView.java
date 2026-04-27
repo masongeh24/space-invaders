@@ -117,6 +117,27 @@ public class GameView extends JPanel {
             0b0111111110101
     };
 
+    // Pixel pattern for alien bullets - 3x7 grid
+    private static final int[] ALIEN_BULLET_1 = {
+            0b010,
+            0b100,
+            0b010,
+            0b001,
+            0b010,
+            0b100,
+            0b010
+    };
+
+    private static final int[] ALIEN_BULLET_2 = {
+            0b010,
+            0b001,
+            0b010,
+            0b100,
+            0b010,
+            0b001,
+            0b010
+    };
+
     private boolean isDying = false;
 
     public GameView(GameModel model) {
@@ -279,13 +300,32 @@ public class GameView extends JPanel {
         GameModel.Bullet pb = model.getPlayerBullet();
         if (pb != null) {
             g.setColor(Color.YELLOW);
-            g.fillRect(pb.x, pb.y, GameModel.BULLET_WIDTH, GameModel.BULLET_HEIGHT);
+            int[] pBulletSprite = model.isBulletAnimFrame() ? ALIEN_BULLET_2 : ALIEN_BULLET_1;
+            int px = 3;
+            int py = 3;
+            for (int r = 0; r < 7; r++) {
+                for (int c = 0; c < 3; c++) {
+                    if ((pBulletSprite[r] & (1 << (2 - c))) != 0) {
+                        g.fillRect(pb.x + c * px, pb.y + r * py, px, py);
+                    }
+                }
+            }
         }
 
         // Alien bullets
         g.setColor(Color.RED);
+        int[] bulletSprite = model.isBulletAnimFrame() ? ALIEN_BULLET_2 : ALIEN_BULLET_1;
+        int px = 3;
+        int py = 3;
+
         for (GameModel.Bullet ab : model.getAlienBullets()) {
-            g.fillRect(ab.x, ab.y, GameModel.BULLET_WIDTH, GameModel.BULLET_HEIGHT);
+            for (int r = 0; r < 7; r++) {
+                for (int c = 0; c < 3; c++) {
+                    if ((bulletSprite[r] & (1 << (2 - c))) != 0) {
+                        g.fillRect(ab.x + c * px, ab.y + r * py, px, py);
+                    }
+                }
+            }
         }
     }
 
@@ -316,7 +356,7 @@ public class GameView extends JPanel {
 
     private void drawTitleScreen(Graphics g) {
         g.setColor(Color.WHITE);
-        
+
         // High Score
         g.setFont(new Font("Arial", Font.BOLD, 24));
         String highScoreText = "HI-SCORE: " + model.getHighScore();
@@ -338,25 +378,25 @@ public class GameView extends JPanel {
         // Points Table
         int tableY = 300;
         int tableX = GameModel.WIDTH / 2 - 100;
-        
+
         g.setFont(new Font("Arial", Font.BOLD, 24));
-        
+
         // UFO
         g.setColor(Color.RED);
         drawUFOAt(g, tableX, tableY);
         g.setColor(Color.WHITE);
         g.drawString("= 300 PTS", tableX + 60, tableY + 20);
-        
+
         // Top Alien
         tableY += 50;
         drawTopAlienAt(g, tableX + 5, tableY);
         g.drawString("= 30 PTS", tableX + 60, tableY + 20);
-        
+
         // Middle Alien
         tableY += 50;
         drawMiddleAlienAt(g, tableX + 5, tableY);
         g.drawString("= 20 PTS", tableX + 60, tableY + 20);
-        
+
         // Bottom Alien
         tableY += 50;
         drawBottomAlienAt(g, tableX + 5, tableY);
@@ -364,7 +404,8 @@ public class GameView extends JPanel {
     }
 
     private void drawUFOAt(Graphics g, int x, int y) {
-        int px = 3; int py = 3;
+        int px = 3;
+        int py = 3;
         for (int r = 0; r < 7; r++) {
             for (int c = 0; c < 16; c++) {
                 if ((UFO_SPRITE[r] & (1 << (15 - c))) != 0) {
@@ -375,7 +416,8 @@ public class GameView extends JPanel {
     }
 
     private void drawTopAlienAt(Graphics g, int x, int y) {
-        int px = 3; int py = 3;
+        int px = 3;
+        int py = 3;
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if ((TOP_ALIEN_1[r] & (1 << (7 - c))) != 0) {
@@ -386,7 +428,8 @@ public class GameView extends JPanel {
     }
 
     private void drawMiddleAlienAt(Graphics g, int x, int y) {
-        int px = 3; int py = 3;
+        int px = 3;
+        int py = 3;
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 11; c++) {
                 if ((MIDDLE_ALIEN_1[r] & (1 << (10 - c))) != 0) {
@@ -397,7 +440,8 @@ public class GameView extends JPanel {
     }
 
     private void drawBottomAlienAt(Graphics g, int x, int y) {
-        int px = 3; int py = 3;
+        int px = 3;
+        int py = 3;
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 12; c++) {
                 if ((BOTTOM_ALIEN_1[r] & (1 << (11 - c))) != 0) {
