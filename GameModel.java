@@ -47,6 +47,7 @@ public class GameModel {
     private int lives;
     private int highScore;
     private boolean paused = false;
+    private boolean onTitleScreen = true;
     private GameView view;
     private static final String SCORE_FILE = "Score.txt";
 
@@ -169,7 +170,7 @@ public class GameModel {
 
     // Logic for updating game state
     public void tick() {
-        if (lives <= 0 || paused)
+        if (lives <= 0 || paused || onTitleScreen)
             return;
 
         updatePlayerBullet();
@@ -425,6 +426,14 @@ public class GameModel {
 
     public boolean isGameOver() {
         return lives <= 0;
+    }
+
+    public boolean isOnTitleScreen() {
+        return onTitleScreen;
+    }
+
+    public void startGame() {
+        onTitleScreen = false;
     }
 
     // Inner classes for entities

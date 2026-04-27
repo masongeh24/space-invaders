@@ -109,3 +109,10 @@ Prompt 14: Use javax.sound.sampled to play the appropriate sound effects for the
 
     Sound prompt 4: In GameController.java, make it so every time the aliens take a step, they make a sound (cycle through fastinvader 1 through 4). The sounds should match how fast the aliens are moving. Make sure the sound does not keep playing after the game pauses or ends.
 
+        Observation: The sound effects are all playing correctly now and correspond to the in game events. The sounds take a noticable few seconds to load initially, but then the game plays all sound effects correctly. I plan to add a start screen, which should help mitigate the time it takes to load the sounds.
+
+Prompt 15: Add a title screen (implement in GameView) that displays "Space Invaders" in large text centered on the screen, with the high score written above it, and a prompt to press the spacebar to start below it. Below that there should be a points table that shows the sprites on the left, and = however many pts to the right of each alien sprite (Have one for the ufo, top row aliens, middle row aliens, and bottom row aliens). Hitting the spacebar should start the game (implement in GameController and GameModel), and the game should start.
+
+    Observation: (Ising the Gemini flash agent) The agent implemented the title screen correctly using the sprite data I provided earlier and the font API to display the text. When starting the game, GameView now defaults to drawing the title screen instead of the game screen. The GameController also was updated to use the isTitleScreen() method to decide whether to draw the game screen or the title screen to change spacebar inputs from start game to fire bullet.
+
+Prompt 16: 

@@ -142,13 +142,17 @@ public class GameView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        drawPlayer(g);
-        drawAliens(g);
-        drawBonusShip(g);
-        drawShields(g);
-        drawBullets(g);
-        drawUI(g);
-        drawHighScore(g);
+        if (model.isOnTitleScreen()) {
+            drawTitleScreen(g);
+        } else {
+            drawPlayer(g);
+            drawAliens(g);
+            drawBonusShip(g);
+            drawShields(g);
+            drawBullets(g);
+            drawUI(g);
+            drawHighScore(g);
+        }
     }
 
     private void drawPlayer(Graphics g) {
@@ -308,5 +312,98 @@ public class GameView extends JPanel {
         String text = "High Score: " + model.getHighScore();
         int width = g.getFontMetrics().stringWidth(text);
         g.drawString(text, GameModel.WIDTH - width - 10, 20);
+    }
+
+    private void drawTitleScreen(Graphics g) {
+        g.setColor(Color.WHITE);
+        
+        // High Score
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        String highScoreText = "HI-SCORE: " + model.getHighScore();
+        int hsWidth = g.getFontMetrics().stringWidth(highScoreText);
+        g.drawString(highScoreText, (GameModel.WIDTH - hsWidth) / 2, 50);
+
+        // Title
+        g.setFont(new Font("Arial", Font.BOLD, 72));
+        String title = "SPACE INVADERS";
+        int titleWidth = g.getFontMetrics().stringWidth(title);
+        g.drawString(title, (GameModel.WIDTH - titleWidth) / 2, 150);
+
+        // Prompt
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        String prompt = "PRESS SPACE TO START";
+        int promptWidth = g.getFontMetrics().stringWidth(prompt);
+        g.drawString(prompt, (GameModel.WIDTH - promptWidth) / 2, 220);
+
+        // Points Table
+        int tableY = 300;
+        int tableX = GameModel.WIDTH / 2 - 100;
+        
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        
+        // UFO
+        g.setColor(Color.RED);
+        drawUFOAt(g, tableX, tableY);
+        g.setColor(Color.WHITE);
+        g.drawString("= 300 PTS", tableX + 60, tableY + 20);
+        
+        // Top Alien
+        tableY += 50;
+        drawTopAlienAt(g, tableX + 5, tableY);
+        g.drawString("= 30 PTS", tableX + 60, tableY + 20);
+        
+        // Middle Alien
+        tableY += 50;
+        drawMiddleAlienAt(g, tableX + 5, tableY);
+        g.drawString("= 20 PTS", tableX + 60, tableY + 20);
+        
+        // Bottom Alien
+        tableY += 50;
+        drawBottomAlienAt(g, tableX + 5, tableY);
+        g.drawString("= 10 PTS", tableX + 60, tableY + 20);
+    }
+
+    private void drawUFOAt(Graphics g, int x, int y) {
+        int px = 3; int py = 3;
+        for (int r = 0; r < 7; r++) {
+            for (int c = 0; c < 16; c++) {
+                if ((UFO_SPRITE[r] & (1 << (15 - c))) != 0) {
+                    g.fillRect(x + c * px, y + r * py, px, py);
+                }
+            }
+        }
+    }
+
+    private void drawTopAlienAt(Graphics g, int x, int y) {
+        int px = 3; int py = 3;
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                if ((TOP_ALIEN_1[r] & (1 << (7 - c))) != 0) {
+                    g.fillRect(x + c * px, y + r * py, px, py);
+                }
+            }
+        }
+    }
+
+    private void drawMiddleAlienAt(Graphics g, int x, int y) {
+        int px = 3; int py = 3;
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 11; c++) {
+                if ((MIDDLE_ALIEN_1[r] & (1 << (10 - c))) != 0) {
+                    g.fillRect(x + c * px, y + r * py, px, py);
+                }
+            }
+        }
+    }
+
+    private void drawBottomAlienAt(Graphics g, int x, int y) {
+        int px = 3; int py = 3;
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 12; c++) {
+                if ((BOTTOM_ALIEN_1[r] & (1 << (11 - c))) != 0) {
+                    g.fillRect(x + c * px, y + r * py, px, py);
+                }
+            }
+        }
     }
 }

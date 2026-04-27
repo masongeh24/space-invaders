@@ -113,7 +113,9 @@ public class GameController {
                         rightPressed = true;
                         break;
                     case KeyEvent.VK_SPACE:
-                        if (model.getPlayerBullet() == null) {
+                        if (model.isOnTitleScreen()) {
+                            model.startGame();
+                        } else if (model.getPlayerBullet() == null) {
                             model.firePlayerBullet();
                             playShootSound();
                         }
