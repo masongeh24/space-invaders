@@ -115,4 +115,11 @@ Prompt 15: Add a title screen (implement in GameView) that displays "Space Invad
 
     Observation: (Ising the Gemini flash agent) The agent implemented the title screen correctly using the sprite data I provided earlier and the font API to display the text. When starting the game, GameView now defaults to drawing the title screen instead of the game screen. The GameController also was updated to use the isTitleScreen() method to decide whether to draw the game screen or the title screen to change spacebar inputs from start game to fire bullet.
 
-Prompt 16: 
+Prompt 16: Implement a sprite and animation for the enemy bullets. Sprite example (they can stay red):
+[Attached sprite of squigly lines]. Do the same for the player bullets.
+
+    Observation: (Ising the Gemini flash agent) The agent implemented the sprite and animation for the enemy bullets correctly using the sprite data I provided. By adding a bulletAnimFrame and bulletAnimCounter, The sprite is toggled every 8 ticks for a cool laser animation.
+
+Prompt 17: Remove the code for the you win! screen. In GameModel.java, implement code that starts a new wave of aliens whenever all aliens are cleared. Every new wave of aliens should start slightly faster than the last wave. Do not use swing imports in GameModel.java.
+
+    Observation: The agent implemented a field to track the base move threshold for the current wave, and a method to reset the aliens and start a new wave when all aliens are cleared. The aliens now reset and speed up slightly every time all aliens are cleared. The speed scaling was also altered to scale proportionally from the initial incrementally faster speed to a mac speed (The minimum move speed is 10 ticks which may be a little too fast. I will write a test to verify.)

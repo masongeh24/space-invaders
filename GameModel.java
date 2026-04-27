@@ -53,7 +53,8 @@ public class GameModel {
 
     private int alienDirection = 1; // 1 for right, -1 for left
     private int alienMoveCounter = 0;
-    private int alienMoveThreshold = 60; // Move aliens every N ticks
+    private int alienMoveThreshold = 60; // Current threshold
+    private int waveBaseMoveThreshold = 60; // Starting threshold for current wave
 
     private Random random = new Random();
 
@@ -127,6 +128,7 @@ public class GameModel {
         lives = 3;
         alienDirection = 1;
         alienMoveCounter = 0;
+        waveBaseMoveThreshold = 60;
         alienMoveThreshold = 60;
         animframe = false;
         initAliens();
@@ -298,12 +300,13 @@ public class GameModel {
                         highScore = score;
                         saveHighScore();
                     }
+                    startNextWave();
+                } else {
+                    // Speed up aliens: threshold decreases as aliens are destroyed
+                    int totalAliens = ALIEN_ROWS * ALIEN_COLS;
+                    int remainingAliens = aliens.size();
+                    alienMoveThreshold = 2 + (int) ((waveBaseMoveThreshold - 2) * ((double) remainingAliens / totalAliens));
                 }
-
-                // Speed up aliens: threshold decreases as aliens are destroyed
-                int totalAliens = ALIEN_ROWS * ALIEN_COLS;
-                int remainingAliens = aliens.size();
-                alienMoveThreshold = 2 + (int) (48 * ((double) remainingAliens / totalAliens));
             } else if (bonusShipActive && intersects(playerBullet.x, playerBullet.y, BULLET_WIDTH, BULLET_HEIGHT,
                     bonusShipX, bonusShipY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
                 // Player bullet vs Bonus Ship
@@ -446,6 +449,16 @@ public class GameModel {
 
     public void startGame() {
         onTitleScreen = false;
+    }
+
+    private void startNextWave() {
+        waveBaseMoveThreshold -= 5;
+        if (waveBaseMoveThreshold < 10)
+            waveBaseMoveThreshold = 10;
+        alienMoveThreshold = waveBaseMoveThreshold;
+        initAliens();
+        playerBullet = null;
+        alienBullets = new ArrayList<>();
     }
 
     // Inner classes for entities

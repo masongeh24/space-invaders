@@ -339,10 +339,6 @@ public class GameView extends JPanel {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 48));
             g.drawString("GAME OVER", GameModel.WIDTH / 2 - 150, GameModel.HEIGHT / 2);
-        } else if (model.getAliens().isEmpty()) {
-            g.setColor(Color.GREEN);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("YOU WIN!", GameModel.WIDTH / 2 - 120, GameModel.HEIGHT / 2);
         }
     }
 
