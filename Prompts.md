@@ -95,15 +95,17 @@ Prompt 14: Use javax.sound.sampled to play the appropriate sound effects for the
 
     Observation: I used Gemini 3 flash to implement the sound effects in GameController.java. The sound effects are now played using javax.sound.sampled. I then compiled and ran the program to verify that the game logic was implemented correctly. The game plays the sound effect once, but does nothing afterward.
 
-    Prompt: (I am using Gemini 3.1 pro for this fix) I think there is a bug in the sound file code. The sound does not play right away after hiting the spacebar, then after playing once it does not play again
+    Sound prompt 1: (I am using Gemini 3.1 pro for this fix) I think there is a bug in the sound file code. The sound does not play right away after hiting the spacebar, then after playing once it does not play again
 
         Observation: The agent decided a more efficient method for playing sounds was necessary. The game kept re-reading the sound file from the hard drive every time the player shot a bullet, which was inefficient and caused the sound to not play right away, overloading the audio buffer. Now, the game loads the sound file once with a loadsounds() method and then plays it whenever the player shoots a bullet. This allows the sound to play without latency.
 
-        Now implement code in GameController to play the explosion sound whenever the player is hit, and the invaderkilled sound whenever a enemy is hit.
+    Sound prompt 2: Now implement code in GameController to play the explosion sound whenever the player is hit, and the invaderkilled sound whenever a enemy is hit.
 
-        Observation: Agent updated loadsounds(), added methods playexplosionSound() and playInvaderKilledSound(), and modified the game loop to call these methods when appropriate. It also updated the game loop to check for game over before attempting to play sounds.
+    Observation: Agent updated loadsounds(), added methods playexplosionSound() and playInvaderKilledSound(), and modified the game loop to call these methods when appropriate. It also updated the game loop to check for game over before attempting to play sounds.
 
+    Sound prompt 3: Now add the sound of the bonus ship flying across the screen whenever it appears. It should loop continuously until the bonus ship is destroyed or disappears.
 
+    Observation: Agent updated loadsounds(), added methods playUFOSound() and stopUFOSound(), and modified the game loop to call these methods when appropriate. It also updated the game loop to check for game over before attempting to play sounds. 
 
-        
+    Sound prompt 4: In GameController.java, make it so every time the aliens take a step, they make a sound (cycle through fastinvader 1 through 4). The sounds should match how fast the aliens are moving. Make sure the sound does not keep playing after the game pauses or ends.
 

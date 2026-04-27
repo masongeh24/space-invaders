@@ -23,6 +23,9 @@ public class GameController {
     private Clip shootClip;
     private Clip explosionClip;
     private Clip invaderKilledClip;
+    private Clip ufoClip;
+    private Clip[] invaderClips = new Clip[4];
+    private int currentInvaderSound = 0;
 
     public GameController() {
         model = new GameModel();
@@ -54,6 +57,20 @@ public class GameController {
                 AudioInputStream audioIn = AudioSystem.getAudioInputStream(invaderKilledFile);
                 invaderKilledClip = AudioSystem.getClip();
                 invaderKilledClip.open(audioIn);
+            }
+            File ufoFile = new File("SoundEffects/ufo.wav");
+            if (ufoFile.exists()) {
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(ufoFile);
+                ufoClip = AudioSystem.getClip();
+                ufoClip.open(audioIn);
+            }
+            for (int i = 0; i < 4; i++) {
+                File f = new File("SoundEffects/fastinvader" + (i + 1) + ".wav");
+                if (f.exists()) {
+                    AudioInputStream audioIn = AudioSystem.getAudioInputStream(f);
+                    invaderClips[i] = AudioSystem.getClip();
+                    invaderClips[i].open(audioIn);
+                }
             }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
@@ -122,10 +139,13 @@ public class GameController {
         // Run game logic and repaint every 16ms (~60 FPS)
         gameLoop = new Timer(16, e -> {
             if (model.isGameOver()) {
+                stopUFOSound();
                 gameLoop.stop();
             } else {
                 int oldLives = model.getLives();
                 int oldAliens = model.getAliens().size();
+                boolean oldBonusShip = model.isBonusShipActive();
+                boolean oldAnimFrame = model.isAnimFrame();
 
                 if (leftPressed) model.movePlayer(-5);
                 if (rightPressed) model.movePlayer(5);
@@ -136,6 +156,16 @@ public class GameController {
                 }
                 if (model.getAliens().size() < oldAliens) {
                     playInvaderKilledSound();
+                }
+                
+                if (model.isBonusShipActive() && !oldBonusShip) {
+                    playUFOSound();
+                } else if (!model.isBonusShipActive() && oldBonusShip) {
+                    stopUFOSound();
+                }
+
+                if (model.isAnimFrame() != oldAnimFrame) {
+                    playNextInvaderSound();
                 }
             }
             view.repaint();
@@ -162,6 +192,28 @@ public class GameController {
             invaderKilledClip.setFramePosition(0);
             invaderKilledClip.start();
         }
+    }
+
+    private void playUFOSound() {
+        if (ufoClip != null) {
+            ufoClip.setFramePosition(0);
+            ufoClip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+
+    private void stopUFOSound() {
+        if (ufoClip != null) {
+            ufoClip.stop();
+        }
+    }
+
+    private void playNextInvaderSound() {
+        Clip c = invaderClips[currentInvaderSound];
+        if (c != null) {
+            c.setFramePosition(0);
+            c.start();
+        }
+        currentInvaderSound = (currentInvaderSound + 1) % 4;
     }
 
     public static void main(String[] args) {
