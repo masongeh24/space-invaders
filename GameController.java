@@ -3,6 +3,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * GameController.java
@@ -17,15 +20,30 @@ public class GameController {
     private Timer gameLoop;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    private Clip shootClip;
 
     public GameController() {
         model = new GameModel();
         view = new GameView(model);
         model.setView(view);
         
+        loadSounds();
         setupWindow();
         setupInput();
         startGameLoop();
+    }
+
+    private void loadSounds() {
+        try {
+            File file = new File("SoundEffects/shoot.wav");
+            if (file.exists()) {
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+                shootClip = AudioSystem.getClip();
+                shootClip.open(audioIn);
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupWindow() {
@@ -64,7 +82,10 @@ public class GameController {
                         rightPressed = true;
                         break;
                     case KeyEvent.VK_SPACE:
-                        model.firePlayerBullet();
+                        if (model.getPlayerBullet() == null) {
+                            model.firePlayerBullet();
+                            playShootSound();
+                        }
                         break;
                 }
             }
@@ -96,6 +117,13 @@ public class GameController {
             view.repaint();
         });
         gameLoop.start();
+    }
+
+    private void playShootSound() {
+        if (shootClip != null) {
+            shootClip.setFramePosition(0);
+            shootClip.start();
+        }
     }
 
     public static void main(String[] args) {

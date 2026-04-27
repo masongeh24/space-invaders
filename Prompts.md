@@ -90,3 +90,12 @@ I then added the middle and bottom alien sprites one prompt at a time.
     The agent created the sprites by storing the pixel data as binary literals in the form of int arrays in GameView.java.
     
     Sprite Enhancements: I changed the pixel scaling to 3x3 for all sprites to make them more visible. I also had the agent add sprites for the player and the bonus ship.
+
+Prompt 14: Use javax.sound.sampled to play the appropriate sound effects for the game. Start with the player shooting sound whenever the player shoots a bullet.
+
+    Observation: I used Gemini 3 flash to implement the sound effects in GameController.java. The sound effects are now played using javax.sound.sampled. I then compiled and ran the program to verify that the game logic was implemented correctly. The game plays the sound effect once, but does nothing afterward.
+
+    Prompt: (I am using Gemini 3.1 pro for this fix) I think there is a bug in the sound file code. The sound does not play right away after hiting the spacebar, then after playing once it does not play again
+
+        Observation: The agent decided a more efficient method for playing sounds was necessary. The game kept re-reading the sound file from the hard drive every time the player shot a bullet, which was inefficient and caused the sound to not play right away, overloading the audio buffer. Now, the game loads the sound file once with a loadsounds() method and then plays it whenever the player shoots a bullet. This allows the sound to play without latency.
+
