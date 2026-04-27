@@ -88,4 +88,5 @@ I then added the middle and bottom alien sprites one prompt at a time.
 
     Observation: I used Gemini 3 flash to implement the alien animation in GameModel.java and GameView.java. The aliens now swap between two different sprites every time they move. I then compiled and ran the program to verify that the game logic was implemented correctly. The aliens now animate between the two sprites. 
     The agent created the sprites by storing the pixel data as binary literals in the form of int arrays in GameView.java.
-
+    
+    Sprite Enhancements: I changed the pixel scaling to 3x3 for all sprites to make them more visible. I also had the agent add sprites for the player and the bonus ship.

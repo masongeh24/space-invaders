@@ -16,72 +16,108 @@ public class GameView extends JPanel {
 
     // Pixel patterns for top alien (Squid) - 8x8 grid
     private static final int[] TOP_ALIEN_1 = {
-        0b00011000,
-        0b00111100,
-        0b01111110,
-        0b11011011,
-        0b11111111,
-        0b00100100,
-        0b01011010,
-        0b10100101
+            0b00011000,
+            0b00111100,
+            0b01111110,
+            0b11011011,
+            0b11111111,
+            0b00100100,
+            0b01011010,
+            0b10100101
     };
 
     private static final int[] TOP_ALIEN_2 = {
-        0b00011000,
-        0b00111100,
-        0b01111110,
-        0b11011011,
-        0b11111111,
-        0b01011010,
-        0b10100101,
-        0b01000010
+            0b00011000,
+            0b00111100,
+            0b01111110,
+            0b11011011,
+            0b11111111,
+            0b01011010,
+            0b10100101,
+            0b01000010
     };
 
     // Pixel patterns for bottom alien (Octopus) - 12x8 grid
     private static final int[] BOTTOM_ALIEN_1 = {
-        0b000011110000,
-        0b011111111110,
-        0b111111111111,
-        0b111001100111,
-        0b111111111111,
-        0b000110011000,
-        0b001101101100,
-        0b110000000011
+            0b000011110000,
+            0b011111111110,
+            0b111111111111,
+            0b111001100111,
+            0b111111111111,
+            0b000110011000,
+            0b001101101100,
+            0b110000000011
     };
 
     private static final int[] BOTTOM_ALIEN_2 = {
-        0b000011110000,
-        0b011111111110,
-        0b111111111111,
-        0b111001100111,
-        0b111111111111,
-        0b001110011100,
-        0b011001100110,
-        0b001100001100
+            0b000011110000,
+            0b011111111110,
+            0b111111111111,
+            0b111001100111,
+            0b111111111111,
+            0b001110011100,
+            0b011001100110,
+            0b001100001100
     };
 
     // Pixel patterns for middle alien (Crab) - 11x8 grid
     private static final int[] MIDDLE_ALIEN_1 = {
-        0b00100000100,
-        0b00010001000,
-        0b00111111100,
-        0b01101110110,
-        0b11111111111,
-        0b10111111101,
-        0b10100000101,
-        0b00011011000
+            0b00100000100,
+            0b00010001000,
+            0b00111111100,
+            0b01101110110,
+            0b11111111111,
+            0b10111111101,
+            0b10100000101,
+            0b00011011000
     };
 
     private static final int[] MIDDLE_ALIEN_2 = {
-        0b00100000100,
-        0b10010001001,
-        0b10111111101,
-        0b11101110111,
-        0b11111111111,
-        0b01111111110,
-        0b00100000100,
-        0b01000000010
+            0b00100000100,
+            0b10010001001,
+            0b10111111101,
+            0b11101110111,
+            0b11111111111,
+            0b01111111110,
+            0b00100000100,
+            0b01000000010
     };
+
+    // Pixel pattern for UFO (Mystery Ship) - 16x7 grid
+    private static final int[] UFO_SPRITE = {
+            0b0000011111100000,
+            0b0001111111111000,
+            0b0011111111111100,
+            0b0110110110110110,
+            0b1111111111111111,
+            0b0011001111001100,
+            0b0011000000001100
+    };
+
+    // Pixel pattern for Player (Turret) - 13x8 grid
+    private static final int[] PLAYER_SPRITE = {
+            0b0000001000000,
+            0b0000011100000,
+            0b0000011100000,
+            0b0011111111100,
+            0b0111111111110,
+            0b1111111111111,
+            0b1111111111111,
+            0b1111111111111
+    };
+
+    private static final int[] PLAYER_DESTROYED_SPRITE = {
+            0b0000010001000,
+            0b0001000100100,
+            0b0010100101000,
+            0b0100010001010,
+            0b0011110111000,
+            0b1000101101100,
+            0b0011111111001,
+            0b0111111110101
+    };
+
+    private boolean isDying = false;
 
     public GameView(GameModel model) {
         this.model = model;
@@ -91,9 +127,11 @@ public class GameView extends JPanel {
 
     public void flashPlayer() {
         playerColor = Color.WHITE;
+        isDying = true;
         repaint();
         javax.swing.Timer timer = new javax.swing.Timer(500, e -> {
             playerColor = Color.GREEN;
+            isDying = false;
             repaint();
         });
         timer.setRepeats(false);
@@ -103,7 +141,7 @@ public class GameView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         drawPlayer(g);
         drawAliens(g);
         drawBonusShip(g);
@@ -115,7 +153,21 @@ public class GameView extends JPanel {
 
     private void drawPlayer(Graphics g) {
         g.setColor(playerColor);
-        g.fillRect(model.getPlayerX(), model.getPlayerY(), GameModel.PLAYER_WIDTH, GameModel.PLAYER_HEIGHT);
+        int x = model.getPlayerX();
+        int y = model.getPlayerY();
+        int[] sprite = isDying ? PLAYER_DESTROYED_SPRITE : PLAYER_SPRITE;
+        int px = 3; // Pixel width
+        int py = 3; // Pixel height
+        int offsetX = (GameModel.PLAYER_WIDTH - (13 * px)) / 2;
+        int offsetY = (GameModel.PLAYER_HEIGHT - (8 * py)) / 2;
+
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 13; c++) {
+                if ((sprite[r] & (1 << (12 - c))) != 0) {
+                    g.fillRect(x + offsetX + c * px, y + offsetY + r * py, px, py);
+                }
+            }
+        }
     }
 
     private void drawAliens(Graphics g) {
@@ -134,7 +186,7 @@ public class GameView extends JPanel {
     private void drawTopAlien(Graphics g, int x, int y) {
         int[] sprite = model.isAnimFrame() ? TOP_ALIEN_2 : TOP_ALIEN_1;
         int px = 3; // Pixel width
-        int py = 2; // Pixel height
+        int py = 3; // Pixel height
         int offsetX = (GameModel.ALIEN_WIDTH - (8 * px)) / 2;
         int offsetY = (GameModel.ALIEN_HEIGHT - (8 * py)) / 2;
 
@@ -149,8 +201,8 @@ public class GameView extends JPanel {
 
     private void drawBottomAlien(Graphics g, int x, int y) {
         int[] sprite = model.isAnimFrame() ? BOTTOM_ALIEN_2 : BOTTOM_ALIEN_1;
-        int px = 2; // Pixel width
-        int py = 2; // Pixel height
+        int px = 3; // Pixel width
+        int py = 3; // Pixel height
         int offsetX = (GameModel.ALIEN_WIDTH - (12 * px)) / 2;
         int offsetY = (GameModel.ALIEN_HEIGHT - (8 * py)) / 2;
 
@@ -165,8 +217,8 @@ public class GameView extends JPanel {
 
     private void drawMiddleAlien(Graphics g, int x, int y) {
         int[] sprite = model.isAnimFrame() ? MIDDLE_ALIEN_2 : MIDDLE_ALIEN_1;
-        int px = 2; // Pixel width
-        int py = 2; // Pixel height
+        int px = 3; // Pixel width
+        int py = 3; // Pixel height
         int offsetX = (GameModel.ALIEN_WIDTH - (11 * px)) / 2;
         int offsetY = (GameModel.ALIEN_HEIGHT - (8 * py)) / 2;
 
@@ -182,7 +234,20 @@ public class GameView extends JPanel {
     private void drawBonusShip(Graphics g) {
         if (model.isBonusShipActive()) {
             g.setColor(Color.RED);
-            g.fillRect(model.getBonusShipX(), model.getBonusShipY(), GameModel.PLAYER_WIDTH, GameModel.PLAYER_HEIGHT);
+            int x = model.getBonusShipX();
+            int y = model.getBonusShipY();
+            int px = 3; // Pixel width
+            int py = 3; // Pixel height
+            int offsetX = (GameModel.PLAYER_WIDTH - (16 * px)) / 2;
+            int offsetY = (GameModel.PLAYER_HEIGHT - (7 * py)) / 2;
+
+            for (int r = 0; r < 7; r++) {
+                for (int c = 0; c < 16; c++) {
+                    if ((UFO_SPRITE[r] & (1 << (15 - c))) != 0) {
+                        g.fillRect(x + offsetX + c * px, y + offsetY + r * py, px, py);
+                    }
+                }
+            }
         }
     }
 
@@ -203,7 +268,8 @@ public class GameView extends JPanel {
     }
 
     private void drawBullets(Graphics g) {
-        if (model.isGameOver()) return;
+        if (model.isGameOver())
+            return;
 
         // Player bullet
         GameModel.Bullet pb = model.getPlayerBullet();
@@ -224,7 +290,7 @@ public class GameView extends JPanel {
         g.setFont(new Font("Arial", Font.BOLD, 16));
         g.drawString("Score: " + model.getScore(), 10, 20);
         g.drawString("Lives: " + model.getLives(), 10, 40);
-        
+
         if (model.getLives() <= 0) {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 48));
