@@ -20,6 +20,7 @@ public class GameController {
     private Timer gameLoop;
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    private boolean wasPaused = false;
     private Clip shootClip;
     private Clip explosionClip;
     private Clip invaderKilledClip;
@@ -152,6 +153,16 @@ public class GameController {
                 if (leftPressed) model.movePlayer(-5);
                 if (rightPressed) model.movePlayer(5);
                 model.tick();
+
+                boolean isPaused = model.isPaused();
+                if (isPaused && !wasPaused) {
+                    stopUFOSound();
+                } else if (!isPaused && wasPaused) {
+                    if (model.isBonusShipActive()) {
+                        playUFOSound();
+                    }
+                }
+                wasPaused = isPaused;
 
                 if (model.getLives() < oldLives) {
                     playExplosionSound();

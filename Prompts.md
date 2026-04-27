@@ -123,3 +123,16 @@ Prompt 16: Implement a sprite and animation for the enemy bullets. Sprite exampl
 Prompt 17: Remove the code for the you win! screen. In GameModel.java, implement code that starts a new wave of aliens whenever all aliens are cleared. Every new wave of aliens should start slightly faster than the last wave. Do not use swing imports in GameModel.java.
 
     Observation: The agent implemented a field to track the base move threshold for the current wave, and a method to reset the aliens and start a new wave when all aliens are cleared. The aliens now reset and speed up slightly every time all aliens are cleared. The speed scaling was also altered to scale proportionally from the initial incrementally faster speed to a mac speed (The minimum move speed is 10 ticks which may be a little too fast. I will write a test to verify.)
+
+*I have observed that the shields do not reset when the next wave of aliens is spawned.
+[Other TODOs: Nudge player bullet slightly left to center it, pause ufo sound when player loses a life and game is paused.]
+
+Fix: I went into the nextWave() method and added code to reset the shields using initShields(). I also added resetBonusShipTimer().
+
+Prompt 18: I noticed that when the player bullet fires, the bullet comes out 2 pixels to the right of center of the player sprite. Please center the player bullet.
+
+    Observation: The agent modified the code in GameModel.java to more accurately reflect the dimensions of the sprite of the player bullet (by adjusting the x coordinate of the bullet when it is fired). It now shoots from the center of the player.
+
+Prompt 19: In GameController.java, implement code in startGameLoop() to stop the ufo sound when the player loses a life, then start the sound again when the pause is finished.
+    
+    Observation: The agent added the aformentioned field to track the previous pause state. The sound now stops and starts correctly depending on the game state.

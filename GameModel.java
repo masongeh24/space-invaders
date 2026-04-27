@@ -23,8 +23,8 @@ public class GameModel {
     public static final int PLAYER_HEIGHT = 20;
     public static final int ALIEN_WIDTH = 30;
     public static final int ALIEN_HEIGHT = 20;
-    public static final int BULLET_WIDTH = 5;
-    public static final int BULLET_HEIGHT = 10;
+    public static final int BULLET_WIDTH = 9;
+    public static final int BULLET_HEIGHT = 21;
 
     public static final int ALIEN_ROWS = 5;
     public static final int ALIEN_COLS = 11;
@@ -64,7 +64,7 @@ public class GameModel {
     private int bonusShipY = 30; // Near the top
     private int bonusShipDirection; // 1 for left-to-right, -1 for right-to-left
     private int bonusShipTimer; // Ticks until next spawn
-    
+
     private boolean animframe = false;
     private boolean bulletAnimFrame = false;
     private int bulletAnimCounter = 0;
@@ -264,7 +264,7 @@ public class GameModel {
         if (random.nextInt(100) < 2) { // 2% chance per tick to fire from a random alien
             if (!aliens.isEmpty()) {
                 Alien shooter = aliens.get(random.nextInt(aliens.size()));
-                alienBullets.add(new Bullet(shooter.x + ALIEN_WIDTH / 2, shooter.y + ALIEN_HEIGHT));
+                alienBullets.add(new Bullet(shooter.x + (ALIEN_WIDTH - BULLET_WIDTH) / 2, shooter.y + ALIEN_HEIGHT));
             }
         }
     }
@@ -305,7 +305,8 @@ public class GameModel {
                     // Speed up aliens: threshold decreases as aliens are destroyed
                     int totalAliens = ALIEN_ROWS * ALIEN_COLS;
                     int remainingAliens = aliens.size();
-                    alienMoveThreshold = 2 + (int) ((waveBaseMoveThreshold - 2) * ((double) remainingAliens / totalAliens));
+                    alienMoveThreshold = 2
+                            + (int) ((waveBaseMoveThreshold - 2) * ((double) remainingAliens / totalAliens));
                 }
             } else if (bonusShipActive && intersects(playerBullet.x, playerBullet.y, BULLET_WIDTH, BULLET_HEIGHT,
                     bonusShipX, bonusShipY, PLAYER_WIDTH, PLAYER_HEIGHT)) {
@@ -378,7 +379,7 @@ public class GameModel {
         if (paused)
             return;
         if (playerBullet == null) {
-            playerBullet = new Bullet(playerX + PLAYER_WIDTH / 2, playerY);
+            playerBullet = new Bullet(playerX + (PLAYER_WIDTH - BULLET_WIDTH) / 2, playerY);
         }
     }
 
@@ -457,6 +458,8 @@ public class GameModel {
             waveBaseMoveThreshold = 10;
         alienMoveThreshold = waveBaseMoveThreshold;
         initAliens();
+        initShields();
+        resetBonusShipTimer();
         playerBullet = null;
         alienBullets = new ArrayList<>();
     }
