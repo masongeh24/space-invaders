@@ -99,3 +99,11 @@ Prompt 14: Use javax.sound.sampled to play the appropriate sound effects for the
 
         Observation: The agent decided a more efficient method for playing sounds was necessary. The game kept re-reading the sound file from the hard drive every time the player shot a bullet, which was inefficient and caused the sound to not play right away, overloading the audio buffer. Now, the game loads the sound file once with a loadsounds() method and then plays it whenever the player shoots a bullet. This allows the sound to play without latency.
 
+        Now implement code in GameController to play the explosion sound whenever the player is hit, and the invaderkilled sound whenever a enemy is hit.
+
+        Observation: Agent updated loadsounds(), added methods playexplosionSound() and playInvaderKilledSound(), and modified the game loop to call these methods when appropriate. It also updated the game loop to check for game over before attempting to play sounds.
+
+
+
+        
+

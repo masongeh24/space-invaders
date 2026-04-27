@@ -21,6 +21,8 @@ public class GameController {
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private Clip shootClip;
+    private Clip explosionClip;
+    private Clip invaderKilledClip;
 
     public GameController() {
         model = new GameModel();
@@ -40,6 +42,18 @@ public class GameController {
                 AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
                 shootClip = AudioSystem.getClip();
                 shootClip.open(audioIn);
+            }
+            File explosionFile = new File("SoundEffects/explosion.wav");
+            if (explosionFile.exists()) {
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(explosionFile);
+                explosionClip = AudioSystem.getClip();
+                explosionClip.open(audioIn);
+            }
+            File invaderKilledFile = new File("SoundEffects/invaderkilled.wav");
+            if (invaderKilledFile.exists()) {
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(invaderKilledFile);
+                invaderKilledClip = AudioSystem.getClip();
+                invaderKilledClip.open(audioIn);
             }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
@@ -110,9 +124,19 @@ public class GameController {
             if (model.isGameOver()) {
                 gameLoop.stop();
             } else {
+                int oldLives = model.getLives();
+                int oldAliens = model.getAliens().size();
+
                 if (leftPressed) model.movePlayer(-5);
                 if (rightPressed) model.movePlayer(5);
                 model.tick();
+
+                if (model.getLives() < oldLives) {
+                    playExplosionSound();
+                }
+                if (model.getAliens().size() < oldAliens) {
+                    playInvaderKilledSound();
+                }
             }
             view.repaint();
         });
@@ -123,6 +147,20 @@ public class GameController {
         if (shootClip != null) {
             shootClip.setFramePosition(0);
             shootClip.start();
+        }
+    }
+
+    private void playExplosionSound() {
+        if (explosionClip != null) {
+            explosionClip.setFramePosition(0);
+            explosionClip.start();
+        }
+    }
+
+    private void playInvaderKilledSound() {
+        if (invaderKilledClip != null) {
+            invaderKilledClip.setFramePosition(0);
+            invaderKilledClip.start();
         }
     }
 
