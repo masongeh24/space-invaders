@@ -55,13 +55,15 @@ public class GameModel {
     private int alienMoveThreshold = 60; // Move aliens every N ticks
 
     private Random random = new Random();
-    
+
     // Bonus Ship State
     private boolean bonusShipActive = false;
     private int bonusShipX;
     private int bonusShipY = 30; // Near the top
     private int bonusShipDirection; // 1 for left-to-right, -1 for right-to-left
     private int bonusShipTimer; // Ticks until next spawn
+    
+    private boolean animframe = false;
 
     public GameModel() {
         loadHighScore();
@@ -123,6 +125,7 @@ public class GameModel {
         alienDirection = 1;
         alienMoveCounter = 0;
         alienMoveThreshold = 60;
+        animframe = false;
         initAliens();
         initShields();
         resetBonusShipTimer();
@@ -159,7 +162,7 @@ public class GameModel {
             for (int col = 0; col < ALIEN_COLS; col++) {
                 int x = 50 + col * ALIEN_SPACING_X;
                 int y = 50 + row * ALIEN_SPACING_Y;
-                aliens.add(new Alien(x, y, points));
+                aliens.add(new Alien(x, y, points, row));
             }
         }
     }
@@ -220,6 +223,7 @@ public class GameModel {
         alienMoveCounter++;
         if (alienMoveCounter >= alienMoveThreshold) {
             alienMoveCounter = 0;
+            animframe = !animframe;
             boolean shiftDown = false;
 
             // Check if any alien hit the edge
@@ -349,7 +353,8 @@ public class GameModel {
 
     // Actions
     public void movePlayer(int delta) {
-        if (paused) return;
+        if (paused)
+            return;
         playerX += delta;
         if (playerX < 0)
             playerX = 0;
@@ -358,7 +363,8 @@ public class GameModel {
     }
 
     public void firePlayerBullet() {
-        if (paused) return;
+        if (paused)
+            return;
         if (playerBullet == null) {
             playerBullet = new Bullet(playerX + PLAYER_WIDTH / 2, playerY);
         }
@@ -413,18 +419,23 @@ public class GameModel {
         return bonusShipY;
     }
 
+    public boolean isAnimFrame() {
+        return animframe;
+    }
+
     public boolean isGameOver() {
         return lives <= 0;
     }
 
     // Inner classes for entities
     public static class Alien {
-        public int x, y, points;
+        public int x, y, points, row;
 
-        public Alien(int x, int y, int points) {
+        public Alien(int x, int y, int points, int row) {
             this.x = x;
             this.y = y;
             this.points = points;
+            this.row = row;
         }
     }
 

@@ -82,4 +82,10 @@ Prompt 12: In GameModel.java, implement code that makes the bottom two rows of a
 
     Observation: I used Gemini 3 flash to implement the alien point system in GameModel.java. It was suprisingly simple to just add if statements to the initAliens() method to assign points based on the row and update the score by the alien's points when hit instead of a fixed 10 points. I then compiled and ran the program to verify that the game logic was implemented correctly. The bottom two rows of aliens are now worth 10 points each, the middle two rows are worth 20 points each, and the top row is worth 30 points each.
 
-Prompt 13: 
+Prompt 13: Every time the aliens move, I want them to swap between two different sprites. 
+GameModel.java should track a boolean animframe, then GameView.java draws different shapes for the aliens based on the animframe. Lets start with the top alien row. I have attached images of the two sprites for the top alien row. [I attached the 8-bit pixel art images.]
+I then added the middle and bottom alien sprites one prompt at a time.
+
+    Observation: I used Gemini 3 flash to implement the alien animation in GameModel.java and GameView.java. The aliens now swap between two different sprites every time they move. I then compiled and ran the program to verify that the game logic was implemented correctly. The aliens now animate between the two sprites. 
+    The agent created the sprites by storing the pixel data as binary literals in the form of int arrays in GameView.java.
+
